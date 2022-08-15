@@ -5,6 +5,7 @@
 
 body {
 	background-color: #0b2434;
+	height: 100vh;
 }
 
 .tenzies {
@@ -115,4 +116,12 @@ body {
 
 .info-colored{
 	color: #5035ff;
+	display: inline;
+}
+
+@media only screen and (max-width: 1050px) {
+	.info{
+		width: 80%;
+	
+	}
 }

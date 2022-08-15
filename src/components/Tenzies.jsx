@@ -109,7 +109,7 @@ export default function Tenzies() {
 			<div className="info">
 				{highscore && (
 					<h2>
-						Highscore: <span className="info-colored">{highscore}</span> gitseconds
+						Highscore: <span className="info-colored">{highscore}</span> seconds
 					</h2>
 				)}
 
