@@ -10,17 +10,15 @@ export default function Timer(props) {
 	useEffect(() => {
 		if (!won) {
 			timer = setInterval(() => {
-				setSeconds((prevSeconds) => prevSeconds + 1);
-				setScoreTime((prevHighscoreTime) => prevHighscoreTime + 1);
+				setSeconds(prevSeconds => prevSeconds + 1);
+				setScoreTime(prevScoreTime => prevScoreTime + 1);
 
 				if (seconds === 59) {
-					setMinutes((prevMinutes) => prevMinutes + 1);
+					setMinutes(prevMinutes => prevMinutes + 1);
 					setSeconds(0);
 				}
 			}, 1000);
-			console.log(won)
 		} else {
-			console.log(won);
 			handleHighscore(scoreTime);
 			setSeconds(0);
 			setMinutes(0);

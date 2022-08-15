@@ -11,6 +11,7 @@ export default function Tenzies() {
 	const [winsCounter, setWinsCounter] = useState(0);
 	const [scores, setScores] = useState([]);
 	const [highscore, setHighscore] = useState();
+	const [totalRolls, setTotalRolls] = useState(0);
 
 	useEffect(() => {
 		const firstValue = dice[0].value;
@@ -54,6 +55,8 @@ export default function Tenzies() {
 			setDice(generateRandomDices());
 			setWinsCounter((prevWinsCounter) => prevWinsCounter + 1);
 		} else {
+			setTotalRolls((prevTotalRolls) => prevTotalRolls + 1);
+			console.log(totalRolls);
 			setDice((prevDice) =>
 				prevDice.map((dice) => {
 					return dice.isHeld
@@ -76,31 +79,34 @@ export default function Tenzies() {
 		// const newScore = {
 		// 	score: score,
 		// };
-
-		setScores((prevHighscores) => [...prevHighscores, score]);
-		console.log(scores);
+		if (score != 0) {
+			setScores((prevHighscores) => [...prevHighscores, score]);
+		}
 		getHighscore();
 	}
 
 	const { width, height } = useWindowSize();
 
 	function getHighscore() {
-		let maxValue = scores[0]
 		setHighscore(() => {
-			for (let i = 0; i < scores.length; i++) {
-				if (scores[i] > maxValue) {
-					maxValue = scores[i];
-				}
-				console.log(maxValue)
-			}
-			return maxValue;
+			return Math.min(...scores);
 		});
 	}
 
 	return (
 		<>
 			<Timer won={won} handleHighscore={handleScores} />
-			{highscore && <h2>{highscore}</h2>}
+			<div className="info">
+				{highscore && (
+					<h2>
+						Highscore: <span className="info-colored">{highscore}</span> seconds
+					</h2>
+				)}
+
+				<h2>
+					Total Rolls: <span className="info-colored">{totalRolls}</span>
+				</h2>
+			</div>
 			<main className="tenzies">
 				<h1 className="wins-counter">
 					You have {winsCounter} {winsCounter < 2 ? "win" : "wins"}, Good Job!
