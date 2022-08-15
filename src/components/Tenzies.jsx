@@ -54,6 +54,8 @@ export default function Tenzies() {
 			setWon(false);
 			setDice(generateRandomDices());
 			setWinsCounter((prevWinsCounter) => prevWinsCounter + 1);
+			setTotalRolls(0);
+			console.log("hi");
 		} else {
 			setTotalRolls((prevTotalRolls) => prevTotalRolls + 1);
 			console.log(totalRolls);
@@ -93,13 +95,21 @@ export default function Tenzies() {
 		});
 	}
 
+	const winCounterMessage =
+		winsCounter == 0 ? (
+			<h1 className="wins-counter">No wins</h1>
+		) : (
+			<h1 className="wins-counter">
+				You have {winsCounter} {winsCounter < 2 ? "win" : "wins"}, Good Job!
+			</h1>
+		);
 	return (
 		<>
 			<Timer won={won} handleHighscore={handleScores} />
 			<div className="info">
 				{highscore && (
 					<h2>
-						Highscore: <span className="info-colored">{highscore}</span> seconds
+						Highscore: <span className="info-colored">{highscore}</span> gitseconds
 					</h2>
 				)}
 
@@ -108,9 +118,7 @@ export default function Tenzies() {
 				</h2>
 			</div>
 			<main className="tenzies">
-				<h1 className="wins-counter">
-					You have {winsCounter} {winsCounter < 2 ? "win" : "wins"}, Good Job!
-				</h1>
+				{winCounterMessage}
 				<div className="container">
 					<h1 className="title">Tenzies</h1>
 					<small className="description">

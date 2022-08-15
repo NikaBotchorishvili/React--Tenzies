@@ -104,13 +104,14 @@ body {
 
 .info{
 	display: flex;
+	width: 50%;
 	color: white;
-	justify-content: center;
+	justify-content: space-between;
 	font-family: "Karla", sans-serif;
-	gap: 50px;
 	margin: 30px auto 0 auto;
 	text-align: center;
 }
+
 
 .info-colored{
 	color: #5035ff;
