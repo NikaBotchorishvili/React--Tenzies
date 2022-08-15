@@ -7,8 +7,10 @@ import Timer from "./Timer";
 
 export default function Tenzies() {
 	const [dice, setDice] = useState(generateRandomDices());
-	const [tenzies, setTenzies] = useState(false);
+	const [won, setWon] = useState(false);
 	const [winsCounter, setWinsCounter] = useState(0);
+	const [scores, setScores] = useState([]);
+	const [highscore, setHighscore] = useState();
 
 	useEffect(() => {
 		const firstValue = dice[0].value;
@@ -16,7 +18,7 @@ export default function Tenzies() {
 		const allValuesSame = dice.every((d) => d.value == firstValue);
 
 		if (allDiceHeld && allValuesSame) {
-			setTenzies(true);
+			setWon(true);
 		}
 	}, [dice]);
 
@@ -47,8 +49,8 @@ export default function Tenzies() {
 	});
 
 	function roll() {
-		if (tenzies) {
-			setTenzies(false);
+		if (won) {
+			setWon(false);
 			setDice(generateRandomDices());
 			setWinsCounter((prevWinsCounter) => prevWinsCounter + 1);
 		} else {
@@ -70,11 +72,35 @@ export default function Tenzies() {
 		);
 	}
 
+	function handleScores(score) {
+		// const newScore = {
+		// 	score: score,
+		// };
+
+		setScores((prevHighscores) => [...prevHighscores, score]);
+		console.log(scores);
+		getHighscore();
+	}
+
 	const { width, height } = useWindowSize();
+
+	function getHighscore() {
+		let maxValue = scores[0]
+		setHighscore(() => {
+			for (let i = 0; i < scores.length; i++) {
+				if (scores[i] > maxValue) {
+					maxValue = scores[i];
+				}
+				console.log(maxValue)
+			}
+			return maxValue;
+		});
+	}
 
 	return (
 		<>
-			{/* <Timer/> */}
+			<Timer won={won} handleHighscore={handleScores} />
+			{highscore && <h2>{highscore}</h2>}
 			<main className="tenzies">
 				<h1 className="wins-counter">
 					You have {winsCounter} {winsCounter < 2 ? "win" : "wins"}, Good Job!
@@ -88,9 +114,9 @@ export default function Tenzies() {
 
 					<div className="dice-container">{DiceElements}</div>
 					<button onClick={roll} className="roll-btn">
-						{tenzies ? "Start over" : "Role"}
+						{won ? "Start over" : "Role"}
 					</button>
-					{tenzies && (
+					{won && (
 						<Confetti height={height} width={width} numberOfPieces={400} />
 					)}
 				</div>
