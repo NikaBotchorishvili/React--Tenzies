@@ -21,7 +21,11 @@ body {
 	color: white;
 	font-family: "Inter", sans-serif;
 	margin-bottom: 15px;
+	text-align: center;
+	font-size: 40px;
+	color: red;
 }
+
 .container {
 	display: flex;
 	flex-direction: column;
@@ -44,12 +48,13 @@ body {
 	color: #4a4e74;
 	letter-spacing: -0.03em;
 	font-weight: 400;
-	font-size: 17px;
+	font-size: 18px;
 }
 
 .dice-container {
 	display: grid;
 	grid-template-columns: repeat(5, 1fr);
+	margin-top: 15px;
 	gap: 15px;
 }
 
@@ -120,8 +125,50 @@ body {
 }
 
 @media only screen and (max-width: 1050px) {
+
 	.info{
-		width: 80%;
-	
+		width: 70%;
+		font-size: 15px;
+	}
+
+	.container{
+		width: 300px;
+		height: 300px;
+	}
+
+	.dice{
+		width: 26px;
+		height: 26px;
+	}
+
+	.container .description{
+		font-size: 16px;
+	}
+
+	.wins-counter{
+		font-size: 35px;
+	}
+}
+
+@media only screen and (max-width: 350px) {
+
+	.tenzies{
+		justify-content: flex-start;
+		margin-top: 100px;
+	}
+	.container{
+		
+		width: 250px;
+		height: 250px;
+	}
+
+	.wins-counter{
+		font-size: 25px;
+	}
+}
+
+@media only screen and (max-width: 560px){
+	.info{
+		font-size: 10px;
 	}
 }

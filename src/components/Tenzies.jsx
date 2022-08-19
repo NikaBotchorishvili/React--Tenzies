@@ -33,7 +33,7 @@ export default function Tenzies() {
 			const randomValue = Math.ceil(Math.random() * 6);
 
 			newDices.push({
-				value: randomValue,
+				value: 6,
 				isHeld: false,
 				id: nanoid(),
 			});
@@ -109,7 +109,7 @@ export default function Tenzies() {
 				</h2>
 			</div>
 			<main className="tenzies">
-				{winCounterMessage}
+				<h2 className="wins-counter">{winCounterMessage}</h2>
 				<div className="container">
 					<h1 className="title">Tenzies</h1>
 					<small className="description">
