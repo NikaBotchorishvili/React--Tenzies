@@ -1,32 +1,30 @@
 import React, { useState, useEffect } from "react";
 
-export default function Timer(props) {
-	const { won, handleHighscore } = props;
+function Timer(props) {
+	const { won, setScoreTime } = props;
 	const [seconds, setSeconds] = useState(0);
 	const [minutes, setMinutes] = useState(0);
-	const [scoreTime, setScoreTime] = useState(0);
 
 	let timer;
 	useEffect(() => {
 		if (!won) {
 			timer = setInterval(() => {
-				setSeconds(prevSeconds => prevSeconds + 1);
-				setScoreTime(prevScoreTime => prevScoreTime + 1);
+				setSeconds((prevSeconds) => prevSeconds + 1);
+				setScoreTime((prevScoreTime) => prevScoreTime + 1);
 
 				if (seconds === 59) {
-					setMinutes(prevMinutes => prevMinutes + 1);
+					setMinutes((prevMinutes) => prevMinutes + 1);
 					setSeconds(0);
 				}
 			}, 1000);
 		} else {
-			handleHighscore(scoreTime);
 			setSeconds(0);
 			setMinutes(0);
 			setScoreTime(0);
 		}
 
 		return () => clearInterval(timer);
-	}, [seconds, minutes, scoreTime, won]);
+	}, [seconds, minutes, won]);
 
 	return (
 		<div className="counter">
@@ -40,3 +38,5 @@ export default function Timer(props) {
 		</div>
 	);
 }
+
+export default React.memo(Timer);

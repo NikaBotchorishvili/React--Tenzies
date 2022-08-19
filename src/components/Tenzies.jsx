@@ -4,14 +4,16 @@ import { nanoid } from "nanoid";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import Timer from "./Timer";
+import { ScoresContext } from "./App";
 
 export default function Tenzies() {
 	const [dice, setDice] = useState(generateRandomDices());
 	const [won, setWon] = useState(false);
 	const [winsCounter, setWinsCounter] = useState(0);
-	const [scores, setScores] = useState([]);
 	const [highscore, setHighscore] = useState();
 	const [totalRolls, setTotalRolls] = useState(0);
+	const [scoreTime, setScoreTime] = useState(0);
+	const [scores, setScores] = React.useContext(ScoresContext);
 
 	useEffect(() => {
 		const firstValue = dice[0].value;
@@ -20,6 +22,8 @@ export default function Tenzies() {
 
 		if (allDiceHeld && allValuesSame) {
 			setWon(true);
+			setScores((prevScores) => [...prevScores, scoreTime]);
+			setWinsCounter((prevWinsCounter) => prevWinsCounter + 1);
 		}
 	}, [dice]);
 
@@ -37,6 +41,7 @@ export default function Tenzies() {
 
 		return newDices;
 	}
+
 	const DiceElements = dice.map((d) => {
 		return (
 			<Dice
@@ -50,23 +55,15 @@ export default function Tenzies() {
 	});
 
 	function roll() {
-		if (won) {
-			setWon(false);
-			setDice(generateRandomDices());
-			setWinsCounter((prevWinsCounter) => prevWinsCounter + 1);
-			setTotalRolls(0);
-			console.log("hi");
-		} else {
-			setTotalRolls((prevTotalRolls) => prevTotalRolls + 1);
-			console.log(totalRolls);
-			setDice((prevDice) =>
-				prevDice.map((dice) => {
-					return dice.isHeld
-						? dice
-						: { ...dice, value: Math.ceil(Math.random() * 6) };
-				})
-			);
-		}
+		setDice((prevDice) =>
+			prevDice.map((dice) => {
+				return dice.isHeld
+					? dice
+					: { ...dice, value: Math.ceil(Math.random() * 6) };
+			})
+		);
+
+		setTotalRolls((prevTotalRolls) => prevTotalRolls + 1);
 	}
 
 	function holdDice(event, key) {
@@ -77,24 +74,18 @@ export default function Tenzies() {
 		);
 	}
 
-	function handleScores(score) {
-		// const newScore = {
-		// 	score: score,
-		// };
-		if (score != 0) {
-			setScores((prevHighscores) => [...prevHighscores, score]);
-		}
+	function playAgain() {
+		setWon(false);
+		setDice(generateRandomDices);
 		getHighscore();
 	}
-
 	const { width, height } = useWindowSize();
 
 	function getHighscore() {
 		setHighscore(() => {
-			return Math.min(...scores);
+			return scores.length == 1 ? scores[0] : Math.min(...scores);
 		});
 	}
-
 	const winCounterMessage =
 		winsCounter == 0 ? (
 			<h1 className="wins-counter">No wins</h1>
@@ -105,7 +96,7 @@ export default function Tenzies() {
 		);
 	return (
 		<>
-			<Timer won={won} handleHighscore={handleScores} />
+			<Timer won={won} setScoreTime={setScoreTime} />
 			<div className="info">
 				{highscore && (
 					<h2>
@@ -127,9 +118,15 @@ export default function Tenzies() {
 					</small>
 
 					<div className="dice-container">{DiceElements}</div>
-					<button onClick={roll} className="roll-btn">
-						{won ? "Start over" : "Role"}
-					</button>
+					{!won ? (
+						<button onClick={roll} className="roll-btn">
+							Roll
+						</button>
+					) : (
+						<button className="roll-btn" onClick={playAgain}>
+							Play again
+						</button>
+					)}
 					{won && (
 						<Confetti height={height} width={width} numberOfPieces={400} />
 					)}
