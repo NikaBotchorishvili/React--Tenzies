@@ -33,7 +33,7 @@ export default function Tenzies() {
 			const randomValue = Math.ceil(Math.random() * 6);
 
 			newDices.push({
-				value: 6,
+				value: randomValue,
 				isHeld: false,
 				id: nanoid(),
 			});
